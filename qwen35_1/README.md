@@ -45,3 +45,7 @@ data path: ./data
 ```
 
 ***
+### blog
+
+https://zenn.dev/knaka0209/scraps/9481c6c0b4c1e6
+
