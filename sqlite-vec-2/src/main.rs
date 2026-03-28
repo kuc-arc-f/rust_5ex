@@ -317,9 +317,12 @@ async fn main() -> Result<()> {
         if results.len() > 0 {
             let target_dim = &results[0];
             println!("id={}" , target_dim.id);
-            println!("distance={}" , target_dim.distance);
+            let distance = target_dim.distance;
+            println!("distance={}" , distance);
             let content_str = format!("{}\n\n", &target_dim.content);
-            matches.push_str(&content_str.clone().to_string());
+            if(distance < 1.0) {
+                matches.push_str(&content_str.clone().to_string());
+            }
        }
         if matches.len() > 0 {
             out_str = format!("context: {}\n", matches);
