@@ -343,7 +343,7 @@ async fn main() -> Result<()> {
         let send_text = format!("日本語で、回答して欲しい。\n{}", out_str);
         let new_text = format!("要約して欲しい。\n\n {}", send_text);              
         println!("new_text={}\n", new_text);
-        send_post(new_text).await;
+        //send_post(new_text).await;
     }
 
     Ok(())
