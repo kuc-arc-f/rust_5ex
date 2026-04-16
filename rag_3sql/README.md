@@ -73,3 +73,5 @@ target/debug/rag_server
 ***
 ### blog
 
+https://zenn.dev/knaka0209/scraps/62df2da49c6fc8
+
