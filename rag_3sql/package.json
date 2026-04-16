@@ -1,0 +1,33 @@
+{
+  "name": "rag_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "dev": "npm run build && cargo run",
+    "build": "npx esbuild --bundle ./src-ts/client.tsx --minify --outfile=./public/static/client.js",
+    "build:test": "npx esbuild --bundle ./src/client.tsx --minify --outfile=./public/static/client.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "esbuild": "^0.25.8",
+    "lucide-react": "^0.546.0",
+    "marked": "^16.1.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router": "^7.7.0",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "nodemon": "^3.1.0",
+    "typescript": "~5.6.2"
+  }
+}
