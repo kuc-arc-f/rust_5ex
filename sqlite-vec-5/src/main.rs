@@ -1,4 +1,3 @@
-//use anyhow::{Context, Result};
 use anyhow::{Context};
 use dotenvy::dotenv;
 use reqwest::Client;
@@ -15,7 +14,7 @@ use std::path::Path;
 use std::io::{self, Read};
 use uuid::Uuid;
 
-//mod mod_search;
+mod mod_search;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ReadParam{
@@ -221,6 +220,8 @@ async fn send_post(input : String) {
         println!("AI: {}", choice.message.content);
     } 
 }
+
+/*
 #[derive(Serialize)]
 struct EmbedContentRequest {
     model: String,
@@ -237,58 +238,17 @@ struct Part {
     text: String,
 }
 
-/// レスポンスボディの構造体
-#[derive(Deserialize, Debug)]
-struct EmbedContentResponse {
-    embedding: Embedding,
-}
-
 #[derive(Deserialize, Debug)]
 struct Embedding {
     values: Vec<f32>,
 }
+*/
 
-/// Gemini Embedding API を呼び出してベクトルを取得する関数
-async fn get_embedding(api_key: &str, text: &str) -> anyhow::Result<Vec<f32>> {
-    let url = format!(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key={}",
-        api_key
-    );
-
-    let request_body = EmbedContentRequest {
-        model: "models/gemini-embedding-001".to_string(),
-        content: Content {
-            parts: vec![Part {
-                text: text.to_string(),
-            }],
-        },
-    };
-
-    let client = reqwest::Client::new();
-    let response = client
-        .post(&url)
-        .header("Content-Type", "application/json")
-        .json(&request_body)
-        .send()
-        .await
-        .context("APIへのリクエスト送信に失敗しました")?;
-
-    // HTTPステータスコードの確認
-    if !response.status().is_success() {
-        let status = response.status();
-        let error_text = response.text().await.unwrap_or_default();
-        anyhow::bail!("APIエラー ({}): {}", status, error_text);
-    }
-
-    // レスポンスをデシリアライズ
-    let embed_response: EmbedContentResponse = response
-        .json()
-        .await
-        .unwrap();
-        //.context("レスポンスのJSONパースに失敗しました")?;
-
-    Ok(embed_response.embedding.values)
+async fn GetEmbedding(api_key: &str, text: &str) -> anyhow::Result<Vec<f32>> {
+    let embedding_values = mod_search::get_embedding(&api_key, &text).await.unwrap();
+    Ok(embedding_values)
 }
+
 /**
 *
 * @param
@@ -296,7 +256,7 @@ async fn get_embedding(api_key: &str, text: &str) -> anyhow::Result<Vec<f32>> {
 * @return
 */
 #[tokio::main]
-async fn main() -> Result<()> {
+async fn main() ->Result<()> {
     dotenv().ok();
     // 環境変数取得
     let db_url = env::var("DATABASE_URL")
@@ -353,7 +313,7 @@ async fn main() -> Result<()> {
         }        
         for row_file in &file_items {
             // ベクトルを取得
-            let embedding_values = get_embedding(&api_key, &row_file.content).await.unwrap();
+            let embedding_values = GetEmbedding(&api_key, &row_file.content).await.unwrap();
 
             println!("取得成功! ベクトル次元数: {}", embedding_values.len());            
             let id = db_insert(&db, "", &row_file.content.clone() , &embedding_values)?;
@@ -363,17 +323,17 @@ async fn main() -> Result<()> {
     if args.len() == 3 && args[1] == "search"{
         query =args[2].clone();
         println!("search-mode.query: {}\n", query);
-        let input_f32 = get_embedding(&api_key, &query).await.unwrap();
+        let input_f32 = GetEmbedding(&api_key, &query).await.unwrap();
 
         println!("取得成功! ベクトル次元数: {}", input_f32.len());         
         let results : Vec<SearchResult> = db_search(&input_f32, TOP_K)?;
-        //println!("results.len={}" , results.len());
+        println!("results.len={}" , results.len());
 
         let mut matches : String = "".to_string();
         let mut out_str : String = "".to_string();
         if results.len() > 0 {
             let target_dim = &results[0];
-            //println!("id={}" , target_dim.id);
+            println!("id={}" , target_dim.id);
             let distance = target_dim.distance;
             println!("distance={}" , distance);
             let content_str = format!("{}\n\n", &target_dim.content);
@@ -391,7 +351,7 @@ async fn main() -> Result<()> {
         let send_text = format!("日本語で、回答して欲しい。\n{}", out_str);
         let new_text = format!("要約して欲しい。\n\n {}", send_text);              
         println!("new_text={}\n", new_text);
-    }
+  }
 
-    Ok(())
+  Ok(())
 }
