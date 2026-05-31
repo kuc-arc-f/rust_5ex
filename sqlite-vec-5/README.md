@@ -53,4 +53,5 @@ target/debug/sqlite-vec-5 search hello
 
 ### blog
 
+https://zenn.dev/knaka0209/scraps/f2b407ba04c012
 
