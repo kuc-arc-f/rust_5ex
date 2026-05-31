@@ -1,0 +1,17 @@
+[package]
+name = "sqlite-vec-5"
+version = "0.1.0"
+edition = "2021"
+
+#anyhow = "1.0.100"
+[dependencies]
+anyhow = "1"
+dotenvy = "0.15"
+reqwest = { version = "0.12", features = ["json"] }
+rusqlite = {version="0.31.0", features=["bundled"]}
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sqlite-vec={version="0.0.1-alpha.7"}
+tokio = { version = "1", features = ["full"] }
+uuid = { version = "1", features = ["v4"] }
+zerocopy = "0.7.33"
