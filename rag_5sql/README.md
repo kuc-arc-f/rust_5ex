@@ -65,3 +65,5 @@ target\debug\rag_5sql.exe search hello
 ***
 ### blog
 
+https://zenn.dev/knaka0209/scraps/16a42f2c0edfe0
+
