@@ -254,7 +254,7 @@ async fn db_search(query_embedding: &[f32], k: usize, query: String) -> Result<V
             .unwrap_or(std::cmp::Ordering::Equal)
     });
     let mut outItems = Vec::<ScoreData>::new(); 
-    let top_k = 3;
+    let top_k = 1;
     let mut outCount = 0;
     for row_item in &scoreItems {
         //println!("id={}, score={} \n",row_item.id,  row_item.score);
