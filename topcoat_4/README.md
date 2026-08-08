@@ -41,4 +41,9 @@ curl -X POST -H "Content-Type: application/json" \
 ```
 curl http://localhost:3000/api/todo/list
 ```
+
 ***
+### blog
+
+https://zenn.dev/knaka0209/scraps/ff302e1902b488
+
