@@ -23,6 +23,10 @@ struct User {
 struct CreateTodo { 
     title: String 
 }
+#[derive(serde::Deserialize)] 
+struct DeleteTodo { 
+    id: i32 
+}
 
 #[tokio::main]
 async fn main() {
@@ -36,6 +40,16 @@ async fn create_todo(cx: &Cx, Json(input): Json<CreateTodo>
 
     let title = input.title;
     mod_todo::add_todo(&title);
+    Ok("OK".to_string())
+}
+
+#[route(POST "/api/todo/delete")]
+async fn delete_todo(cx: &Cx, Json(input): Json<DeleteTodo>
+) -> Result<String> {
+    println!("id={}", input.id);
+    let id_num: u32 = input.id as u32; 
+
+    mod_todo::delete_todo(id_num);
     Ok("OK".to_string())
 }
 

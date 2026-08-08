@@ -42,6 +42,13 @@ curl -X POST -H "Content-Type: application/json" \
 curl http://localhost:3000/api/todo/list
 ```
 
+* delete
+```
+curl -X POST -H "Content-Type: application/json" \
+ -d '{"id": 1}' \
+ http://localhost:3000/api/todo/delete
+```
+
 ***
 ### blog
 
